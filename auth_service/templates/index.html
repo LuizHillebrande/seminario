@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auth teste</title>
+  <style>
+    body { font-family: sans-serif; max-width: 420px; margin: 24px auto; padding: 0 12px; }
+    h1 { font-size: 1.1rem; }
+    section { border: 1px solid #ccc; padding: 12px; margin-bottom: 14px; }
+    label { display: block; margin-top: 8px; font-size: 0.85rem; }
+    input { width: 100%; box-sizing: border-box; padding: 6px; margin-top: 2px; }
+    button { margin-top: 10px; padding: 6px 12px; cursor: pointer; }
+    pre { background: #f4f4f4; padding: 8px; font-size: 0.75rem; overflow: auto; white-space: pre-wrap; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>Auth — teste rapido</h1>
+  <pre id="out">Aguardando acao...</pre>
+
+  <section>
+    <strong>Cadastro</strong>
+    <form id="f-reg">
+      <label>email <input name="email" type="email" required></label>
+      <label>senha <input name="password" type="password" required></label>
+      <button type="submit">Registrar</button>
+    </form>
+  </section>
+
+  <section>
+    <strong>Login</strong>
+    <form id="f-login">
+      <label>email <input name="email" type="email" required></label>
+      <label>senha <input name="password" type="password" required></label>
+      <button type="submit">Entrar</button>
+    </form>
+  </section>
+
+  <script>
+    const out = document.getElementById("out");
+    function show(obj) {
+      out.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+    }
+    async function post(url, body) {
+      const r = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      let data;
+      try { data = await r.json(); } catch (_) { data = { raw: await r.text() }; }
+      show({ status: r.status, ...data });
+    }
+    document.getElementById("f-reg").onsubmit = (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      post("/auth/register", { email: fd.get("email"), password: fd.get("password") });
+    };
+    document.getElementById("f-login").onsubmit = (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      post("/auth/login", { email: fd.get("email"), password: fd.get("password") });
+    };
+  </script>
+</body>
+</html>
