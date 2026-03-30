@@ -18,18 +18,18 @@ def create_app():
 
     app.register_blueprint(auth_bp)
 
-    @app.get("/") //redireciona para a página de login/registro
+    @app.get("/")  # redireciona para a página de login/registro
     def root():
         return render_template("index.html")
 
-    @app.get("/user-redirect") //redireciona para o serviço de usuário com token
+    @app.get("/user-redirect")  # redireciona para o serviço de usuário com token
     def user_redirect():
         token = request.args.get("token")
         if not token:
             return jsonify({"error": "token necessário"}), 400
         return redirect(f"http://localhost:5002/?token={token}")
 
-    @app.get("/validate") //valida a conta do usuário após registro
+    @app.get("/validate")  # valida a conta do usuário após registro
     def validate():
         from models import User
         user_id = request.args.get("user_id")
@@ -51,7 +51,7 @@ def create_app():
         db.session.commit()
         return render_template("success.html", user=user)
 
-    @app.get("/api-info") //endpoint para fornecer informações sobre a API                                                                  
+    @app.get("/api-info")  # endpoint para fornecer informações sobre a API                                                                  
     def api_info():
         return jsonify(
             {
