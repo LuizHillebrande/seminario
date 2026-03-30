@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Service - Perfil</title>
+  <style>
+    body { font-family: sans-serif; max-width: 420px; margin: 24px auto; padding: 0 12px; }
+    h1 { font-size: 1.1rem; }
+    .success { color: green; background: #f0f0f0; padding: 12px; border-radius: 4px; margin-bottom: 20px; }
+    .token-info { background: #f9f9f9; padding: 12px; border-left: 4px solid #4CAF50; margin: 20px 0; }
+    .token-info pre { margin: 10px 0; font-size: 0.85rem; overflow-x: auto; }
+    button { padding: 8px 16px; cursor: pointer; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>User Service</h1>
+  
+  {% if token %}
+    <div class="success">
+      <strong>✓ Login bem-sucedido!</strong>
+      <p>Você foi redirecionado do Auth Service com um token JWT válido.</p>
+    </div>
+    
+    <div class="token-info">
+      <strong>Token JWT recebido:</strong>
+      <pre id="token-display">{{ token[:50] }}...</pre>
+      <button onclick="toggleToken()">Mostrar token completo</button>
+      <pre id="token-full" style="display:none;">{{ token }}</pre>
+    </div>
+  {% else %}
+    <p>Nenhum token fornecido. Faça login primeiro em <a href="http://localhost:5000/">localhost:5000</a></p>
+  {% endif %}
+
+  <div style="margin-top: 30px; text-align: center;">
+    <a href="http://localhost:5000/">Voltar ao Auth Service</a>
+  </div>
+
+  <script>
+    function toggleToken() {
+      const full = document.getElementById('token-full');
+      const display = document.getElementById('token-display');
+      if (full.style.display === 'none') {
+        full.style.display = 'block';
+        display.style.display = 'none';
+      } else {
+        full.style.display = 'none';
+        display.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

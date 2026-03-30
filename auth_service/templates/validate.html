@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Validar Conta</title>
+  <style>
+    body { font-family: sans-serif; max-width: 420px; margin: 24px auto; padding: 0 12px; text-align: center; }
+    h1 { font-size: 1.2rem; }
+    p { margin: 20px 0; }
+    button { padding: 10px 20px; font-size: 1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Validar Conta</h1>
+  <p>Olá, {{ user.name or user.email }}! Sua conta foi criada. Clique abaixo para validar.</p>
+  <form method="post">
+    <input type="hidden" name="user_id" value="{{ user.id }}">
+    <button type="submit">Validar Conta</button>
+  </form>
+</body>
+</html>

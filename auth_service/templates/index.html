@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Auth teste</title>
+  <title>Auth - Cadastro e Login</title>
   <style>
     body { font-family: sans-serif; max-width: 420px; margin: 24px auto; padding: 0 12px; }
     h1 { font-size: 1.1rem; }
@@ -11,56 +11,56 @@
     label { display: block; margin-top: 8px; font-size: 0.85rem; }
     input { width: 100%; box-sizing: border-box; padding: 6px; margin-top: 2px; }
     button { margin-top: 10px; padding: 6px 12px; cursor: pointer; }
-    pre { background: #f4f4f4; padding: 8px; font-size: 0.75rem; overflow: auto; white-space: pre-wrap; word-break: break-all; }
+    .toggle { text-align: center; margin-top: 10px; }
+    .toggle a { color: blue; text-decoration: none; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <h1>Auth — teste rapido</h1>
-  <pre id="out">Aguardando acao...</pre>
+  <h1>Auth  Cadastro e Login</h1>
+  <p>Para acessar, você deve se cadastrar. Se já tem conta, faça login.</p>
 
-  <section>
-    <strong>Cadastro</strong>
-    <form id="f-reg">
-      <label>email <input name="email" type="email" required></label>
-      <label>senha <input name="password" type="password" required></label>
-      <button type="submit">Registrar</button>
-    </form>
-  </section>
+  <div id="register-section">
+    <section>
+      <strong>Cadastro</strong>
+      <form action="/auth/register" method="post">
+        <label>email <input name="email" type="email" required></label>
+        <label>nome <input name="name" type="text"></label>
+        <label>senha <input name="password" type="password" required></label>
+        <button type="submit">Registrar</button>
+      </form>
+      <div class="toggle">
+        <a href="#" id="show-login">Já tem conta? Faça login</a>
+      </div>
+    </section>
+  </div>
 
-  <section>
-    <strong>Login</strong>
-    <form id="f-login">
-      <label>email <input name="email" type="email" required></label>
-      <label>senha <input name="password" type="password" required></label>
-      <button type="submit">Entrar</button>
-    </form>
-  </section>
+  <div id="login-section" class="hidden">
+    <section>
+      <strong>Login</strong>
+      <form action="/auth/login" method="post">
+        <label>email <input name="email" type="email" required></label>
+        <label>senha <input name="password" type="password" required></label>
+        <button type="submit">Entrar</button>
+      </form>
+      <div class="toggle">
+        <a href="#" id="show-register">Não tem conta? Cadastre-se</a>
+      </div>
+    </section>
+  </div>
 
   <script>
-    const out = document.getElementById("out");
-    function show(obj) {
-      out.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
-    }
-    async function post(url, body) {
-      const r = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      let data;
-      try { data = await r.json(); } catch (_) { data = { raw: await r.text() }; }
-      show({ status: r.status, ...data });
-    }
-    document.getElementById("f-reg").onsubmit = (e) => {
+    document.getElementById("show-login").addEventListener("click", function(e) {
       e.preventDefault();
-      const fd = new FormData(e.target);
-      post("/auth/register", { email: fd.get("email"), password: fd.get("password") });
-    };
-    document.getElementById("f-login").onsubmit = (e) => {
+      document.getElementById("register-section").classList.add("hidden");
+      document.getElementById("login-section").classList.remove("hidden");
+    });
+
+    document.getElementById("show-register").addEventListener("click", function(e) {
       e.preventDefault();
-      const fd = new FormData(e.target);
-      post("/auth/login", { email: fd.get("email"), password: fd.get("password") });
-    };
+      document.getElementById("login-section").classList.add("hidden");
+      document.getElementById("register-section").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>
